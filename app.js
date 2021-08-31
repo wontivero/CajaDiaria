@@ -145,23 +145,32 @@ db.collection("ventas")
       }
     });
     tabla.innerHTML += `
+      <tr class="table-dark">
+          <th></th>
+          <th></th>
+          <th>Contado</th>
+          <th>Debito</th>
+          <th>Credito</th>
+          <th></th>
+          <th></th>
+      </tr>
         <tr class="table-success">
             <th>SubTotales  </th>
             <th>LIBRERIA</th>
-            <th>${totalLibreriaContado} </th>
-            <th>${totalLibreriaDebito} </th>
-            <th>${totalLibreriaCredito} </th>
+            <th>$ ${totalLibreriaContado} </th>
+            <th>$ ${totalLibreriaDebito} </th>
+            <th>$ ${totalLibreriaCredito} </th>
             <th>TOTAL:</th>
-            <th>${totalLibreriaContado + totalLibreriaDebito + totalLibreriaCredito}</th>
-        </tr>
+            <th>$ ${totalLibreriaContado + totalLibreriaDebito + totalLibreriaCredito}</th>
+        </tr>        
         <tr class="table-primary">
             <th>SubTotales  </th>
             <th>INFORMATICA</th>
-            <th>${totalInformaticaContado} </th>
-            <th>${totalInformaticaDebito} </th>
-            <th>${totalInformaticaCredito} </th>
+            <th>$ ${totalInformaticaContado} </th>
+            <th>$ ${totalInformaticaDebito} </th>
+            <th>$ ${totalInformaticaCredito} </th>
             <th>TOTAL:</th>
-            <th>${totalInformaticaContado + totalInformaticaDebito + totalInformaticaCredito} </th>
+            <th>$ ${totalInformaticaContado + totalInformaticaDebito + totalInformaticaCredito} </th>
         </tr>`;
   });
 
@@ -239,21 +248,32 @@ function filtrarPorFecha() {
         }
       });
       tabla.innerHTML += `
+        <tr class="table-dark">
+            <th></th>
+            <th></th>
+            <th>Contado</th>
+            <th>Debito</th>
+            <th>Credito</th>
+            <th></th>
+            <th></th>
+        </tr>
         <tr class="table-success">
             <th>TOTALES  </th>
             <th>LIBRERIA</th>
-            <th>${totalLibreriaContado} </th>
-            <th>${totalLibreriaDebito} </th>
-            <th>${totalLibreriaCredito} </th>
-            <th></th>
+            <th>$ ${totalLibreriaContado} </th>
+            <th>$ ${totalLibreriaDebito} </th>
+            <th>$ ${totalLibreriaCredito} </th>
+            <th>TOTAL:</th>
+            <th>$ ${totalLibreriaContado + totalLibreriaDebito + totalLibreriaCredito}</th>
         </tr>
         <tr class="table-primary">
             <th>TOTALES  </th>
             <th>INFORMATICA</th>
-            <th>${totalInformaticaContado} </th>
-            <th>${totalInformaticaDebito} </th>
-            <th>${totalInformaticaCredito} </th>
-            <th></th>
+            <th>$ ${totalInformaticaContado} </th>
+            <th>$ ${totalInformaticaDebito} </th>
+            <th>$ ${totalInformaticaCredito} </th>
+            <th>TOTAL:</th>
+            <th>$ ${totalInformaticaContado + totalInformaticaDebito + totalInformaticaCredito} </th>
         </tr>`;
     });
 }
@@ -327,10 +347,10 @@ function editar(id, rubro, detalle, contado, debito, credito) {
   };
 }
 
-var fecha = new Date();
-console.log(fecha);
-fecha.getTimezoneOffset();
-console.log(fecha);
+// var fecha = new Date();
+// console.log(fecha);
+// fecha.getTimezoneOffset();
+// console.log(fecha);
 
 function limpiarTxt() {
   //limpiar campos
