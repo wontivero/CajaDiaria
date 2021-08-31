@@ -83,9 +83,7 @@ var fechaParaFiltrar = new Date(
 //console.log(hoy + "SIIIII")
 //const expirationDate = admin.firestore.Timestamp.fromDate(hoy);
 //const query = collectionRef.where('startTime', '<=', hoy)
-
 //Leer documentos
-
 
 var tabla = document.getElementById("tabla");
 
