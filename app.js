@@ -70,6 +70,7 @@ inputLibreria.addEventListener("keyup", function (KeyboardEvent) {
   }
 });
 
+
 //today.getFullYear(),(today.getMonth()+1),today.getDate()
 var txtFecha = (document.getElementById("txtFecha").valueAsDate = new Date()); //ponemos la fecha al txtDAte del form
 //var today = new Date(); //obtenemos la fecha de hoy
