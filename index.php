@@ -107,7 +107,7 @@
                 <th scope="col"class="col-md-1">Debito</th>
                 <th scope="col"class="col-md-1">Credito</th>
                 <th scope="col" class="col-md-2">Fecha </th>
-                <th scope="col" class="col-md-1">Editar</th>
+                <th scope="col" class="col-md-2">Editar</th>
               </tr>
             </thead>
             <tbody id="tabla"> 
