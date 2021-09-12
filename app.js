@@ -113,12 +113,12 @@ db.collection("ventas")
         <td>${doc.data().fecha.toDate().toLocaleString()}</td>
         <td><button class="btn btn-danger pb-1 mb-1" onclick="eliminar('${
           doc.id
-        }')">Del</button>
+        }')"><i class="fa fa-trash-alt" aria-hidden="true"></i></button>
         <button class="btn btn-success pb-1 mb-1" onclick="editar('${
           doc.id
         }','${doc.data().rubro}','${doc.data().detalle}','${
         doc.data().contado
-      }','${doc.data().debito}','${doc.data().credito}')">Edit</button></td>
+      }','${doc.data().debito}','${doc.data().credito}')"><i class="fa fa-pencil-alt" aria-hidden="true"></i></button></td>
         </tr>`;
 
       rubro = doc.data().rubro;
@@ -216,12 +216,13 @@ function filtrarPorFecha() {
         <td>${doc.data().fecha.toDate().toLocaleString()}</td>
         <td><button class="btn btn-danger pb-1 mb-1" onclick="eliminar('${
           doc.id
-        }')">Eliminar</button>
+        }')"><i class="fa fa-trash-alt" aria-hidden="true"></i></button>
+        
         <button class="btn btn-success pb-1 mb-1" onclick="editar('${
           doc.id
         }','${doc.data().rubro}','${doc.data().detalle}','${
           doc.data().contado
-        }','${doc.data().debito}','${doc.data().credito}')">Editar</button></td>
+        }','${doc.data().debito}','${doc.data().credito}')"><i class="fa fa-pencil-alt" aria-hidden="true"></i></button></td>
         </tr>`;
 
         rubro = doc.data().rubro;
