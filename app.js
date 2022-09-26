@@ -104,6 +104,7 @@ db.collection("ventas")
     var clienteLib= 0
     var clienteInf = 0
     querySnapshot.forEach((doc) => {
+      
       //console.log(`${doc.id} => ${doc.data()}`);
 
       tabla.innerHTML += `
