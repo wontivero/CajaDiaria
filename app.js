@@ -100,11 +100,14 @@ db.collection("ventas")
     var totalInformaticaContado = 0;
     var totalInformaticaDebito = 0;
     var totalInformaticaCredito = 0;
-
+    var cliente = querySnapshot.docs.length
+    var clienteLib= 0
+    var clienteInf = 0
     querySnapshot.forEach((doc) => {
       //console.log(`${doc.id} => ${doc.data()}`);
+
       tabla.innerHTML += `
-        <tr>
+        <tr ${doc.data().rubro=='Libreria' ? 'class="table-success"' : 'class="table-primary"'}>
         <th scope="row">${doc.data().rubro}</th>
         <td>${doc.data().detalle}</td>
         <td>${doc.data().contado}</td>
@@ -119,6 +122,7 @@ db.collection("ventas")
         }','${doc.data().rubro}','${doc.data().detalle}','${
         doc.data().contado
       }','${doc.data().debito}','${doc.data().credito}')"><i class="fa fa-pencil-alt" aria-hidden="true"></i></button></td>
+        <td>${cliente--}</td>
         </tr>`;
 
       rubro = doc.data().rubro;
@@ -133,6 +137,7 @@ db.collection("ventas")
           Number(totalLibreriaDebito) + Number(doc.data().debito);
         totalLibreriaCredito =
           Number(totalLibreriaCredito) + Number(doc.data().credito);
+        clienteLib++
       }
       if (rubro == "Informatica") {
         console.log(totalInformaticaDebito);
@@ -142,15 +147,28 @@ db.collection("ventas")
           Number(totalInformaticaDebito) + Number(doc.data().debito);
         totalInformaticaCredito =
           Number(totalInformaticaCredito) + Number(doc.data().credito);
+        clienteInf++
       }
     });
     tabla.innerHTML += `
+      
+      <tr class="table-light">
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
       <tr class="table-dark">
           <th></th>
           <th></th>
           <th>Contado</th>
           <th>Debito</th>
           <th>Credito</th>
+          <th></th>
           <th></th>
           <th></th>
       </tr>
@@ -162,6 +180,7 @@ db.collection("ventas")
             <th>$ ${totalLibreriaCredito} </th>
             <th>TOTAL:</th>
             <th>$ ${totalLibreriaContado + totalLibreriaDebito + totalLibreriaCredito}</th>
+            <th>${clienteLib}</th>
         </tr>        
         <tr class="table-primary">
             <th>SubTotales  </th>
@@ -171,6 +190,7 @@ db.collection("ventas")
             <th>$ ${totalInformaticaCredito} </th>
             <th>TOTAL:</th>
             <th>$ ${totalInformaticaContado + totalInformaticaDebito + totalInformaticaCredito} </th>
+            <th>${clienteInf}</th>
         </tr>`;
   });
 
@@ -203,11 +223,14 @@ function filtrarPorFecha() {
       var totalInformaticaContado = 0;
       var totalInformaticaDebito = 0;
       var totalInformaticaCredito = 0;
+      var cliente = querySnapshot.docs.length
+      var clienteLib= 0
+      var clienteInf = 0
 
       querySnapshot.forEach((doc) => {
         //console.log(`${doc.id} => ${doc.data()}`);
         tabla.innerHTML += `
-        <tr>
+        <tr ${doc.data().rubro=="Libreria" ? 'class="table-success"' : 'class="table-primary"'}>
         <th scope="row">${doc.data().rubro}</th>
         <td>${doc.data().detalle}</td>
         <td>${doc.data().contado}</td>
@@ -223,6 +246,7 @@ function filtrarPorFecha() {
           doc.data().contado
         }','${doc.data().debito}','${doc.data().credito}')"><i class="fa fa-pencil-alt" aria-hidden="true"></i>
         </button></td>
+        <td>${cliente--}</td>
         </tr>`;
 
         rubro = doc.data().rubro;
@@ -237,6 +261,7 @@ function filtrarPorFecha() {
             Number(totalLibreriaDebito) + Number(doc.data().debito);
           totalLibreriaCredito =
             Number(totalLibreriaCredito) + Number(doc.data().credito);
+          clienteLib++
         }
         if (rubro == "Informatica") {
           console.log(totalInformaticaDebito);
@@ -246,15 +271,27 @@ function filtrarPorFecha() {
             Number(totalInformaticaDebito) + Number(doc.data().debito);
           totalInformaticaCredito =
             Number(totalInformaticaCredito) + Number(doc.data().credito);
+          clienteInf++
         }
       });
       tabla.innerHTML += `
+        <tr class="table-light">
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>          
+        </tr>
         <tr class="table-dark">
             <th></th>
             <th></th>
             <th>Contado</th>
             <th>Debito</th>
             <th>Credito</th>
+            <th></th>
             <th></th>
             <th></th>
         </tr>
@@ -266,6 +303,7 @@ function filtrarPorFecha() {
             <th>$ ${totalLibreriaCredito} </th>
             <th>TOTAL:</th>
             <th>$ ${totalLibreriaContado + totalLibreriaDebito + totalLibreriaCredito}</th>
+            <th> ${clienteLib}</th>
         </tr>
         <tr class="table-primary">
             <th>TOTALES  </th>
@@ -275,6 +313,7 @@ function filtrarPorFecha() {
             <th>$ ${totalInformaticaCredito} </th>
             <th>TOTAL:</th>
             <th>$ ${totalInformaticaContado + totalInformaticaDebito + totalInformaticaCredito} </th>
+            <th>${clienteInf}</th>
         </tr>`;
     });
 }
@@ -364,4 +403,116 @@ function limpiarTxt() {
   document.getElementById("txtContadoInformatica").value = "";
   document.getElementById("txtDebitoInformatica").value = "";
   document.getElementById("txtCreditoInformatica").value = "";
+}
+
+
+
+//-------------REÑPORTE--------//
+
+// Filtrar por fecha:
+function reportePorFechas() {
+  var tabla = document.getElementById("tabla");
+  var txtFechaDesde = document.getElementById("txtFechaDesde").valueAsDate;
+  var txtFechaHasta = document.getElementById("txtFechaHasta").valueAsDate;
+
+  var fechaDesde = new Date(
+    txtFechaDesde.getFullYear(),
+    txtFechaDesde.getMonth(),
+    txtFechaDesde.getDate() + 1
+  );
+  var fechaHasta = new Date(
+    txtFechaHasta.getFullYear(),
+    txtFechaHasta.getMonth(),
+    txtFechaHasta.getDate() + 1
+  );
+  console.log("Fecha Desde: " + fechaDesde);
+  console.log("Fecha Hasta: " + fechaHasta);
+
+  db.collection("ventas")
+    .where("fecha", ">=", fechaDesde)
+    .where("fecha", "<=", fechaHasta)
+    .orderBy("fecha", "desc")
+    .onSnapshot((querySnapshot) => {
+      //db.collection("ventas").orderBy("fecha").onSnapshot((querySnapshot) => { //se unsa onSnapshot() en lugar de get() para q actualice en tiempo real
+      tabla.innerHTML = "";
+      totalLibreriaContado = 0;
+      var totalLibreriaDebito = 0;
+      var totalLibreriaCredito = 0;
+      var totalInformaticaContado = 0;
+      var totalInformaticaDebito = 0;
+      var totalInformaticaCredito = 0;
+
+      querySnapshot.forEach((doc) => {
+        //console.log(`${doc.id} => ${doc.data()}`);
+        tabla.innerHTML += `
+        <tr>
+        <th scope="row">${doc.data().rubro}</th>
+        <td>${doc.data().detalle}</td>
+        <td>${doc.data().contado}</td>
+        <td>${doc.data().debito}</td>
+        <td>${doc.data().credito}</td>
+        <td>${doc.data().fecha.toDate().toLocaleString()}</td>
+        <td><button class="btn btn-danger pb-1 mb-1" onclick="eliminar('${
+          doc.id
+        }')"><i class="fa fa-trash-alt" aria-hidden="true"></i></button>
+        <button class="btn btn-success pb-1 mb-1" onclick="editar('${
+          doc.id
+        }','${doc.data().rubro}','${doc.data().detalle}','${
+          doc.data().contado
+        }','${doc.data().debito}','${doc.data().credito}')"><i class="fa fa-pencil-alt" aria-hidden="true"></i>
+        </button></td>
+        </tr>`;
+
+        rubro = doc.data().rubro;
+
+        if (rubro == "Libreria") {
+          //console.log(typeof((doc.data().contado) | 0))
+          //console.log(doc.data().contado)
+          totalLibreriaContado =
+            Number(totalLibreriaContado) + Number(doc.data().contado);
+          //console.log(totalLibreriaContado)
+          totalLibreriaDebito =
+            Number(totalLibreriaDebito) + Number(doc.data().debito);
+          totalLibreriaCredito =
+            Number(totalLibreriaCredito) + Number(doc.data().credito);
+        }
+        if (rubro == "Informatica") {
+          console.log(totalInformaticaDebito);
+          totalInformaticaContado =
+            Number(totalInformaticaContado) + Number(doc.data().contado);
+          totalInformaticaDebito =
+            Number(totalInformaticaDebito) + Number(doc.data().debito);
+          totalInformaticaCredito =
+            Number(totalInformaticaCredito) + Number(doc.data().credito);
+        }
+      });
+      tabla.innerHTML += `
+        <tr class="table-dark">
+            <th></th>
+            <th></th>
+            <th>Contado</th>
+            <th>Debito</th>
+            <th>Credito</th>
+            <th></th>
+            <th></th>
+        </tr>
+        <tr class="table-success">
+            <th>TOTALES  </th>
+            <th>LIBRERIA</th>
+            <th>$ ${totalLibreriaContado} </th>
+            <th>$ ${totalLibreriaDebito} </th>
+            <th>$ ${totalLibreriaCredito} </th>
+            <th>TOTAL:</th>
+            <th>$ ${totalLibreriaContado + totalLibreriaDebito + totalLibreriaCredito}</th>
+        </tr>
+        <tr class="table-primary">
+            <th>TOTALES  </th>
+            <th>INFORMATICA</th>
+            <th>$ ${totalInformaticaContado} </th>
+            <th>$ ${totalInformaticaDebito} </th>
+            <th>$ ${totalInformaticaCredito} </th>
+            <th>TOTAL:</th>
+            <th>$ ${totalInformaticaContado + totalInformaticaDebito + totalInformaticaCredito} </th>
+        </tr>`;
+    });
 }
