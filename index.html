@@ -47,6 +47,12 @@
               <input type="number" class="form-control" id="txtCreditoLibreria">
               <span class="input-group-text">.00</span>
             </div>
+
+            <div class="input-group mb-3">
+              <span class="input-group-text col-md-4"><i class="far fa-credit-card mx-2"></i>Transferencia $</span>
+              <input type="number" class="form-control" id="txtTransLibreria">
+              <span class="input-group-text">.00</span>
+            </div>
             <button class="btn btn-success" value="submit" id="btnGuardarLibreria" onclick="guardar('Libreria')">Guardar</button>
           </div>  
      
@@ -77,7 +83,14 @@
               <input type="number" class="form-control" id="txtCreditoInformatica">
               <span class="input-group-text">.00</span>
             </div>
-            <button class="btn btn-primary" value="submit" id="btnGuardarInformatica" onclick="guardar('Informatica')">Guardar</button>
+
+            <div class="input-group mb-3">
+              <span class="input-group-text col-md-4"><i class="far fa-credit-card mx-2"></i>Transferencia $</span>
+              <input type="number" class="form-control" id="txtTransInformatica">
+              <span class="input-group-text">.00</span>
+            </div>
+
+            <button class="btn btn-warning" value="submit" id="btnGuardarInformatica" onclick="guardar('Informatica')">Guardar</button>
           </div>          
         </div>          
         </div>
@@ -106,6 +119,7 @@
                 <th scope="col"class="col-md-1">Contado</th>
                 <th scope="col"class="col-md-1">Debito</th>
                 <th scope="col"class="col-md-1">Credito</th>
+                <th scope="col"class="col-md-1">Trans</th>
                 <th scope="col" class="col-md-2">Fecha </th>
                 <th scope="col" class="col-md-2">Editar</th>
                 <th scope="col" class="col-md-1">Clientes</th>

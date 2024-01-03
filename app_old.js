@@ -17,13 +17,11 @@ function guardar(rubro) {
     var contado = document.getElementById("txtContadoLibreria").value;
     var debito = document.getElementById("txtDebitoLibreria").value;
     var credito = document.getElementById("txtCreditoLibreria").value;
-    var trans = document.getElementById("txtTransLibreria").value;
   } else {
     var detalle = document.getElementById("txtDetalleInformatica").value;
     var contado = document.getElementById("txtContadoInformatica").value;
     var debito = document.getElementById("txtDebitoInformatica").value;
     var credito = document.getElementById("txtCreditoInformatica").value;
-    var trans = document.getElementById("txtTransInformatica").value;
   }
 
   //var fecha = document.getElementById("fecha").value
@@ -36,7 +34,6 @@ function guardar(rubro) {
       contado: contado,
       debito: debito,
       credito: credito,
-      trans: trans,
     })
     .then((docRef) => {
       limpiarTxt();
@@ -73,6 +70,7 @@ inputLibreria.addEventListener("keyup", function (KeyboardEvent) {
   }
 });
 
+
 //today.getFullYear(),(today.getMonth()+1),today.getDate()
 var txtFecha = (document.getElementById("txtFecha").valueAsDate = new Date()); //ponemos la fecha al txtDAte del form
 //var today = new Date(); //obtenemos la fecha de hoy
@@ -96,45 +94,35 @@ db.collection("ventas")
   .onSnapshot((querySnapshot) => {
     //db.collection("ventas").orderBy("fecha").onSnapshot((querySnapshot) => { //se unsa onSnapshot() en lugar de get() para q actualice en tiempo real
     tabla.innerHTML = "";
-    var totalLibreriaContado = 0;
+    totalLibreriaContado = 0;
     var totalLibreriaDebito = 0;
     var totalLibreriaCredito = 0;
-    var totalLibreriaTrans = 0;
     var totalInformaticaContado = 0;
     var totalInformaticaDebito = 0;
     var totalInformaticaCredito = 0;
-    var totalInformaticaTrans = 0;
-    var cliente = querySnapshot.docs.length;
-    var clienteLib = 0;
-    var clienteInf = 0;
+    var cliente = querySnapshot.docs.length
+    var clienteLib= 0
+    var clienteInf = 0
     querySnapshot.forEach((doc) => {
+      
       //console.log(`${doc.id} => ${doc.data()}`);
 
       tabla.innerHTML += `
-        <tr ${
-          doc.data().rubro == "Libreria"
-            ? 'class="table-success"'
-            : 'class="table-warning"'
-        }>
+        <tr ${doc.data().rubro=='Libreria' ? 'class="table-success"' : 'class="table-primary"'}>
         <th scope="row">${doc.data().rubro}</th>
         <td>${doc.data().detalle}</td>
         <td>${doc.data().contado}</td>
         <td>${doc.data().debito}</td>
         <td>${doc.data().credito}</td>
-        <td>${doc.data().trans}</td>
         <td>${doc.data().fecha.toDate().toLocaleString()}</td>
         <td><button class="btn btn-danger pb-1 mb-1" onclick="eliminar('${
           doc.id
         }')"><i class="fa fa-trash-alt" aria-hidden="true"></i></button>
-        <button class="btn btn-success pb-1 mb-1" onclick="editar(
-        '${doc.id}',
-        '${doc.data().rubro}',
-        '${doc.data().detalle}',
-        '${doc.data().contado}',
-        '${doc.data().debito}',
-        '${doc.data().credito}',
-        '${doc.data().trans}')">
-      <i class="fa fa-pencil-alt" aria-hidden="true"></i></button></td>
+        <button class="btn btn-success pb-1 mb-1" onclick="editar('${
+          doc.id
+        }','${doc.data().rubro}','${doc.data().detalle}','${
+        doc.data().contado
+      }','${doc.data().debito}','${doc.data().credito}')"><i class="fa fa-pencil-alt" aria-hidden="true"></i></button></td>
         <td>${cliente--}</td>
         </tr>`;
 
@@ -150,23 +138,17 @@ db.collection("ventas")
           Number(totalLibreriaDebito) + Number(doc.data().debito);
         totalLibreriaCredito =
           Number(totalLibreriaCredito) + Number(doc.data().credito);
-
-        totalLibreriaTrans =
-          Number(totalLibreriaTrans) + Number(doc.data().trans);
-        clienteLib++;
+        clienteLib++
       }
       if (rubro == "Informatica") {
-        //(totalInformaticaDebito);
+        console.log(totalInformaticaDebito);
         totalInformaticaContado =
           Number(totalInformaticaContado) + Number(doc.data().contado);
         totalInformaticaDebito =
           Number(totalInformaticaDebito) + Number(doc.data().debito);
         totalInformaticaCredito =
           Number(totalInformaticaCredito) + Number(doc.data().credito);
-
-        totalInformaticaTrans =
-          Number(totalInformaticaTrans) + Number(doc.data().trans);
-        clienteInf++;
+        clienteInf++
       }
     });
     tabla.innerHTML += `
@@ -187,10 +169,9 @@ db.collection("ventas")
           <th>Contado</th>
           <th>Debito</th>
           <th>Credito</th>
-          <th>Trans.</th>
           <th></th>
-          <th>TOTAL</th>
-          <th>Clientes</th>
+          <th></th>
+          <th></th>
       </tr>
         <tr class="table-success">
             <th>SubTotales  </th>
@@ -198,37 +179,24 @@ db.collection("ventas")
             <th>$ ${totalLibreriaContado} </th>
             <th>$ ${totalLibreriaDebito} </th>
             <th>$ ${totalLibreriaCredito} </th>
-            <th>$ ${totalLibreriaTrans} </th>
-            <th></th>
-            <th>$ ${
-              totalLibreriaContado +
-              totalLibreriaDebito +
-              totalLibreriaCredito +
-              totalLibreriaTrans
-            }</th>
+            <th>TOTAL:</th>
+            <th>$ ${totalLibreriaContado + totalLibreriaDebito + totalLibreriaCredito}</th>
             <th>${clienteLib}</th>
         </tr>        
-        <tr class="table-warning">
+        <tr class="table-primary">
             <th>SubTotales  </th>
             <th>INFORMATICA</th>
             <th>$ ${totalInformaticaContado} </th>
             <th>$ ${totalInformaticaDebito} </th>
             <th>$ ${totalInformaticaCredito} </th>
-            <th>$ ${totalInformaticaTrans} </th>
-            <th></th>
-            <th>$ ${
-              totalInformaticaContado +
-              totalInformaticaDebito +
-              totalInformaticaCredito +
-              totalInformaticaTrans
-            } </th>
+            <th>TOTAL:</th>
+            <th>$ ${totalInformaticaContado + totalInformaticaDebito + totalInformaticaCredito} </th>
             <th>${clienteInf}</th>
         </tr>`;
   });
 
 // Filtrar por fecha:
 function filtrarPorFecha() {
-  console.log("entre a Filtrar por Fechas")
   var tabla = document.getElementById("tabla");
   var txtFechaSeleccionada = document.getElementById("txtFecha").valueAsDate;
   var fechaDesde = new Date(
@@ -241,7 +209,7 @@ function filtrarPorFecha() {
     txtFechaSeleccionada.getMonth(),
     txtFechaSeleccionada.getDate() + 2
   );
-  //console.log("Fecha seleccionada: " + fechaDesde);
+  console.log("Fecha seleccionada: " + fechaDesde);
 
   db.collection("ventas")
     .where("fecha", ">=", fechaDesde)
@@ -253,43 +221,32 @@ function filtrarPorFecha() {
       totalLibreriaContado = 0;
       var totalLibreriaDebito = 0;
       var totalLibreriaCredito = 0;
-      var totalLibreriaTrans = 0;
       var totalInformaticaContado = 0;
       var totalInformaticaDebito = 0;
       var totalInformaticaCredito = 0;
-      var totalInformaticaTrans = 0;
-      var cliente = querySnapshot.docs.length;
-      var clienteLib = 0;
-      var clienteInf = 0;
+      var cliente = querySnapshot.docs.length
+      var clienteLib= 0
+      var clienteInf = 0
 
       querySnapshot.forEach((doc) => {
         //console.log(`${doc.id} => ${doc.data()}`);
         tabla.innerHTML += `
-        <tr ${
-          doc.data().rubro == "Libreria"
-            ? 'class="table-success"'
-            : 'class="table-warning"'
-        }>
+        <tr ${doc.data().rubro=="Libreria" ? 'class="table-success"' : 'class="table-primary"'}>
         <th scope="row">${doc.data().rubro}</th>
         <td>${doc.data().detalle}</td>
         <td>${doc.data().contado}</td>
         <td>${doc.data().debito}</td>
         <td>${doc.data().credito}</td>
-        <td>${doc.data().trans}</td>
         <td>${doc.data().fecha.toDate().toLocaleString()}</td>
         <td><button class="btn btn-danger pb-1 mb-1" onclick="eliminar('${
           doc.id
         }')"><i class="fa fa-trash-alt" aria-hidden="true"></i></button>
-
-        <button class="btn btn-success pb-1 mb-1" onclick="editar(
-        '${doc.id}',
-        '${doc.data().rubro}',
-        '${doc.data().detalle}',
-        '${doc.data().contado}',
-        '${doc.data().debito}',
-        '${doc.data().credito}',
-        '${doc.data().trans}')">
-        <i class="fa fa-pencil-alt" aria-hidden="true"></i></button></td>
+        <button class="btn btn-success pb-1 mb-1" onclick="editar('${
+          doc.id
+        }','${doc.data().rubro}','${doc.data().detalle}','${
+          doc.data().contado
+        }','${doc.data().debito}','${doc.data().credito}')"><i class="fa fa-pencil-alt" aria-hidden="true"></i>
+        </button></td>
         <td>${cliente--}</td>
         </tr>`;
 
@@ -305,22 +262,17 @@ function filtrarPorFecha() {
             Number(totalLibreriaDebito) + Number(doc.data().debito);
           totalLibreriaCredito =
             Number(totalLibreriaCredito) + Number(doc.data().credito);
-
-          totalLibreriaTrans =
-            Number(totalLibreriaTrans) + Number(doc.data().trans);
-          clienteLib++;
+          clienteLib++
         }
         if (rubro == "Informatica") {
-          //console.log(totalInformaticaDebito);
+          console.log(totalInformaticaDebito);
           totalInformaticaContado =
             Number(totalInformaticaContado) + Number(doc.data().contado);
           totalInformaticaDebito =
             Number(totalInformaticaDebito) + Number(doc.data().debito);
           totalInformaticaCredito =
             Number(totalInformaticaCredito) + Number(doc.data().credito);
-          totalInformaticaTrans =
-            Number(totalInformaticaTrans) + Number(doc.data().trans);
-          clienteInf++;
+          clienteInf++
         }
       });
       tabla.innerHTML += `
@@ -340,10 +292,9 @@ function filtrarPorFecha() {
             <th>Contado</th>
             <th>Debito</th>
             <th>Credito</th>
-            <th>Trans.</th>
-            <th>TOTAL</th>
             <th></th>
-            <th>Clientes</th>
+            <th></th>
+            <th></th>
         </tr>
         <tr class="table-success">
             <th>TOTALES  </th>
@@ -351,14 +302,8 @@ function filtrarPorFecha() {
             <th>$ ${totalLibreriaContado} </th>
             <th>$ ${totalLibreriaDebito} </th>
             <th>$ ${totalLibreriaCredito} </th>
-            <th>$ ${totalLibreriaTrans} </th>
-            <th></th>
-            <th>$ ${
-              totalLibreriaContado +
-              totalLibreriaDebito +
-              totalLibreriaCredito +
-              totalLibreriaTrans
-            }</th>
+            <th>TOTAL:</th>
+            <th>$ ${totalLibreriaContado + totalLibreriaDebito + totalLibreriaCredito}</th>
             <th> ${clienteLib}</th>
         </tr>
         <tr class="table-primary">
@@ -367,14 +312,8 @@ function filtrarPorFecha() {
             <th>$ ${totalInformaticaContado} </th>
             <th>$ ${totalInformaticaDebito} </th>
             <th>$ ${totalInformaticaCredito} </th>
-            <th>$ ${totalInformaticaTrans} </th>
-            <th></th>
-            <th>$ ${
-              totalInformaticaContado +
-              totalInformaticaDebito +
-              totalInformaticaCredito +
-              totalInformaticaTrans
-            } </th>
+            <th>TOTAL:</th>
+            <th>$ ${totalInformaticaContado + totalInformaticaDebito + totalInformaticaCredito} </th>
             <th>${clienteInf}</th>
         </tr>`;
     });
@@ -395,14 +334,13 @@ function eliminar(id) {
 
 //Actualizar Documento
 
-function editar(id, rubro, detalle, contado, debito, credito, trans) {
+function editar(id, rubro, detalle, contado, debito, credito) {
   //Obtengo los datos de las celdas y asigno a los input
   if (rubro == "Libreria") {
     document.getElementById("txtDetalleLibreria").value = detalle;
     document.getElementById("txtContadoLibreria").value = contado;
     document.getElementById("txtDebitoLibreria").value = debito;
     document.getElementById("txtCreditoLibreria").value = credito;
-    document.getElementById("txtTransLibreria").value = trans;
     var boton = document.getElementById("btnGuardarLibreria");
     boton.innerHTML = "Editar";
   } else {
@@ -410,7 +348,6 @@ function editar(id, rubro, detalle, contado, debito, credito, trans) {
     document.getElementById("txtContadoInformatica").value = contado;
     document.getElementById("txtDebitoInformatica").value = debito;
     document.getElementById("txtCreditoInformatica").value = credito;
-    document.getElementById("txtTransInformatica").value = trans;
     var boton = document.getElementById("btnGuardarInformatica");
     boton.innerHTML = "Editar";
   }
@@ -424,13 +361,11 @@ function editar(id, rubro, detalle, contado, debito, credito, trans) {
       var contado = document.getElementById("txtContadoLibreria").value;
       var debito = document.getElementById("txtDebitoLibreria").value;
       var credito = document.getElementById("txtCreditoLibreria").value;
-      var trans = document.getElementById("txtTransLibreria").value;
     } else {
       var detalle = document.getElementById("txtDetalleInformatica").value;
       var contado = document.getElementById("txtContadoInformatica").value;
       var debito = document.getElementById("txtDebitoInformatica").value;
       var credito = document.getElementById("txtCreditoInformatica").value;
-      var trans = document.getElementById("txtTransInformatica").value;
     }
 
     return venta
@@ -439,7 +374,6 @@ function editar(id, rubro, detalle, contado, debito, credito, trans) {
         contado: contado,
         debito: debito,
         credito: credito,
-        trans: trans,
       })
       .then(() => {
         console.log("Document successfully updated!");
@@ -465,16 +399,16 @@ function limpiarTxt() {
   document.getElementById("txtContadoLibreria").value = "";
   document.getElementById("txtDebitoLibreria").value = "";
   document.getElementById("txtCreditoLibreria").value = "";
-  document.getElementById("txtTransLibreria").value = "";
   document.getElementById("txtDetalleInformatica").value =
     "Articulos de Informática";
   document.getElementById("txtContadoInformatica").value = "";
   document.getElementById("txtDebitoInformatica").value = "";
   document.getElementById("txtCreditoInformatica").value = "";
-  document.getElementById("txtTransInformatica").value = "";
 }
 
-//-------------REPORTE--------//
+
+
+//-------------REÑPORTE--------//
 
 // Filtrar por fecha:
 function reportePorFechas() {
@@ -492,8 +426,8 @@ function reportePorFechas() {
     txtFechaHasta.getMonth(),
     txtFechaHasta.getDate() + 1
   );
-  //("Fecha Desde: " + fechaDesde);
-  //console.log("Fecha Hasta: " + fechaHasta);
+  console.log("Fecha Desde: " + fechaDesde);
+  console.log("Fecha Hasta: " + fechaHasta);
 
   db.collection("ventas")
     .where("fecha", ">=", fechaDesde)
@@ -502,14 +436,12 @@ function reportePorFechas() {
     .onSnapshot((querySnapshot) => {
       //db.collection("ventas").orderBy("fecha").onSnapshot((querySnapshot) => { //se unsa onSnapshot() en lugar de get() para q actualice en tiempo real
       tabla.innerHTML = "";
-      var totalLibreriaContado = 0;
+      totalLibreriaContado = 0;
       var totalLibreriaDebito = 0;
       var totalLibreriaCredito = 0;
-      var totalLibreriaTrans = 0;
       var totalInformaticaContado = 0;
       var totalInformaticaDebito = 0;
       var totalInformaticaCredito = 0;
-      var totalInformaticaTrans = 0;
 
       querySnapshot.forEach((doc) => {
         //console.log(`${doc.id} => ${doc.data()}`);
@@ -520,24 +452,23 @@ function reportePorFechas() {
         <td>${doc.data().contado}</td>
         <td>${doc.data().debito}</td>
         <td>${doc.data().credito}</td>
-        <td>${doc.data().trans}</td>
         <td>${doc.data().fecha.toDate().toLocaleString()}</td>
         <td><button class="btn btn-danger pb-1 mb-1" onclick="eliminar('${
           doc.id
         }')"><i class="fa fa-trash-alt" aria-hidden="true"></i></button>
-        <button class="btn btn-success pb-1 mb-1" onclick="editar(
-          '${doc.id}','${doc.data().rubro}','${doc.data().detalle}',
-          '${doc.data().contado}','${doc.data().debito}',
-          '${doc.data().credito}','${doc.data().trans}')">
-          <i class="fa fa-pencil-alt" aria-hidden="true"></i>
+        <button class="btn btn-success pb-1 mb-1" onclick="editar('${
+          doc.id
+        }','${doc.data().rubro}','${doc.data().detalle}','${
+          doc.data().contado
+        }','${doc.data().debito}','${doc.data().credito}')"><i class="fa fa-pencil-alt" aria-hidden="true"></i>
         </button></td>
         </tr>`;
 
         rubro = doc.data().rubro;
+
         if (rubro == "Libreria") {
           //console.log(typeof((doc.data().contado) | 0))
-          //console.log(doc.data())
-
+          //console.log(doc.data().contado)
           totalLibreriaContado =
             Number(totalLibreriaContado) + Number(doc.data().contado);
           //console.log(totalLibreriaContado)
@@ -545,21 +476,21 @@ function reportePorFechas() {
             Number(totalLibreriaDebito) + Number(doc.data().debito);
           totalLibreriaCredito =
             Number(totalLibreriaCredito) + Number(doc.data().credito);
-          totalLibreriaTrans =
-            Number(totalLibreriaTrans) + Number(doc.data().trans);
         }
         if (rubro == "Informatica") {
-          //console.log(totalInformaticaDebito);
+          console.log(totalInformaticaDebito);
           totalInformaticaContado =
             Number(totalInformaticaContado) + Number(doc.data().contado);
           totalInformaticaDebito =
             Number(totalInformaticaDebito) + Number(doc.data().debito);
           totalInformaticaCredito =
             Number(totalInformaticaCredito) + Number(doc.data().credito);
-            totalInformaticaTrans =
-            Number(totalInformaticaTrans) + Number(doc.data().trans);
         }
       });
+
+
+
+      
       tabla.innerHTML += `
         <tr class="table-dark">
             <th></th>
@@ -567,9 +498,8 @@ function reportePorFechas() {
             <th>Contado</th>
             <th>Debito</th>
             <th>Credito</th>
-            <th>Trans.</th>
             <th></th>
-            <th>TOTAL</th>
+            <th></th>
         </tr>
         <tr class="table-success">
             <th>TOTALES  </th>
@@ -577,11 +507,8 @@ function reportePorFechas() {
             <th>$ ${totalLibreriaContado} </th>
             <th>$ ${totalLibreriaDebito} </th>
             <th>$ ${totalLibreriaCredito} </th>
-            <th>$ ${totalLibreriaTrans} </th>
-            <th></th>
-            <th>$ ${
-              totalLibreriaContado + totalLibreriaDebito + totalLibreriaCredito + totalLibreriaTrans
-            }</th>
+            <th>TOTAL:</th>
+            <th>$ ${totalLibreriaContado + totalLibreriaDebito + totalLibreriaCredito}</th>
         </tr>
         <tr class="table-primary">
             <th>TOTALES  </th>
@@ -589,14 +516,8 @@ function reportePorFechas() {
             <th>$ ${totalInformaticaContado} </th>
             <th>$ ${totalInformaticaDebito} </th>
             <th>$ ${totalInformaticaCredito} </th>
-            <th>$ ${totalInformaticaTrans} </th>
-            <th></th>
-            <th>$ ${
-              totalInformaticaContado +
-              totalInformaticaDebito +
-              totalInformaticaCredito +
-              totalInformaticaTrans
-            } </th>
+            <th>TOTAL:</th>
+            <th>$ ${totalInformaticaContado + totalInformaticaDebito + totalInformaticaCredito} </th>
         </tr>`;
     });
 }
